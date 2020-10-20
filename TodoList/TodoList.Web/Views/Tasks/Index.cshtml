@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TodoList.Web.Models.Task>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Welcome TO DO LIST</h1>
+
+<p>
+    <a class="btn btn-success btn-lg" asp-action="Create">Create New Task</a>
+</p>
+<br />
+@foreach (var item in Model)
+{
+
+    DateTime today = DateTime.Today;
+    DateTime next = new DateTime(item.Time.Year, item.Time.Month, item.Time.Day);
+    int numDays = (next - today).Days;
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 d-inline-block p-1">
+        <div class="card">
+            <div class="card-body">
+
+                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.TaskName)</h5>
+                @if (numDays > 0)
+                {
+                    <p class="bg-success text-center text-white rounded">Remaining: @Html.DisplayFor(modelItem => numDays) days</p>
+                }
+                else
+                {
+                    <p class="bg-danger text-center text-white rounded">Delay: @Html.DisplayFor(modelItem => numDays) days</p>
+
+                }
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Discription)</p>
+
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </div>
+
+        </div>
+    </div>
+}
